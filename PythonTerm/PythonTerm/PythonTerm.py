@@ -7,7 +7,7 @@ import codecs
 from xml.dom.minidom import *
 
 def addParsingDicList(xmlData, motherData, childData):
-    # ÆÄ½ÌµÈ µ¥ÀÌÅÍ¸¦ ¸®½ºÆ®¿¡ ³Ö¾î¼­ ¸®ÅÏ ÇÑ´Ù.
+    # ?Ä½Ìµ? ?????Í¸? ????Æ®?? ?Ö¾î¼­ ???? ?Ñ´?.
     doc = parseString(xmlData)
     siGunGuList = doc.getElementsByTagName(motherData)
     signguCdSize = len(siGunGuList)
@@ -21,7 +21,7 @@ def addParsingDicList(xmlData, motherData, childData):
     return list
 
 def openAPItoXML(server, key, value):
-    #ÇÑ±Û ÁÖ¼®
+    #?Ñ±? ?Ö¼?
     req = urllib.request.Request(server + key + value)
     req.add_header = [('User-agent', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36')]
     data = urllib.request.urlopen(req).read().decode('utf-8')
@@ -50,7 +50,7 @@ for i in localList:
         local = localListNum[localList.index(i)]
 
 print(local)
-server2 = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="
+server2 = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchFestival?ServiceKey="
 value2 = str("&areaCode=") + str(local) + str("&MobileOS=ETC&MobileApp=AppTesting&contentTypeId=15")
 
 #print(value2)
@@ -61,9 +61,11 @@ realdata = openAPItoXML(server2, key2, value2)
 #print(realdata)
 eventLocal = addParsingDicList(realdata, "item", "addr1")
 eventName = addParsingDicList(realdata, "item", "title")
+eventTel = addParsingDicList(realdata, "item", "tel")
+eventStartDate = addParsingDicList(realdata, "item", "eventstartdate")
+eventEndDate = addParsingDicList(realdata, "item", "eventenddate")
 eventImage = addParsingDicList(realdata, "item", "firstimage")
 
-
 for i in eventLocal:
-        print(str("Local : ") + i + str("\nName : ") + eventName[eventLocal.index(i)] + str("\nImage : ") + eventImage[eventLocal.index(i)] )
+        print(str("\nName : ") + eventName[eventLocal.index(i)] + str("\nLocal : ") + i + str("\nTel : ") + eventTel[eventLocal.index(i)] + str("\nStarDate : ") + eventStartDate[eventLocal.index(i)] + str("\nEndDate : ") + eventEndDate[eventLocal.index(i)] + str("\nImage : ") + eventImage[eventLocal.index(i)] + str("\n") )
 
