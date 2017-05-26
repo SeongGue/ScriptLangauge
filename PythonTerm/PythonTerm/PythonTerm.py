@@ -70,6 +70,25 @@ def localSearch():
             print(str("\nName : ") + eventName[eventLocal.index(i)] + str("\nLocal : ") + i + str("\nTel : ") + eventTel[eventLocal.index(i)] +  str("\nStarDate : ") + eventStartDate[eventLocal.index(i)] + str("\nEndDate : ") + eventEndDate[eventLocal.index(i)] + str  ("\nImage : ") + eventImage[eventLocal.index(i)] + str("\n") )
     
 
+def keywordSearch():
+    server2 = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey="
+    keyword = input("키워드를 적어주세요 : ")
+    keyword = urllib.parse.quote(keyword)
+    value2 = "&keyword=" + str(keyword) + "&MobileOS=ETC&MobileApp=AppTesting&contentTypeId=15"
+    
+    realdata = openAPItoXML(server2, api_key, value2)
+    
+    #print(realdata)
+    eventLocal = addParsingDicList(realdata, "item", "addr1")
+    eventName = addParsingDicList(realdata, "item", "title")
+    eventTel = addParsingDicList(realdata, "item", "tel")
+    eventImage = addParsingDicList(realdata, "item", "firstimage")
+
+    for i in eventLocal:
+            print(str("\nName : ") + eventName[eventLocal.index(i)] + str("\nLocal : ") + i + str("\nTel : ") + eventTel[eventLocal.index(i)] + str  ("\nImage : ") + eventImage[eventLocal.index(i)] + str("\n") )
+    
+
+
 while (loop == True):
     print("------------------------------------------------------------------")
     print("1. 지역검색")
@@ -83,7 +102,7 @@ while (loop == True):
     
 
     if int(key_num) == 2:
-        print("텍스트로 검새합니다.")
+       keywordSearch()
 
     if int(key_num) == 3:
         loop = False;
