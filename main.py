@@ -42,9 +42,16 @@ class TourMap:
     def saveMapData(self):
         self.tour_map.save('tour_map.html')
 
-APIServer = TourAPI()
-tour_map = TourMap()
-festival_list = APIServer.GetFastivalData("20170527")
-for d in festival_list:
-    tour_map.AddMarker(d["FastivalTitle"], d["mapX"], d["mapY"])
-tour_map.saveMapData()
+def main():
+    APIServer = TourAPI()
+    tour_map = TourMap()
+    date = input()
+    festival_list = APIServer.GetFastivalData(date)
+    for d in festival_list:
+        tour_map.AddMarker(d["FastivalTitle"], d["mapX"], d["mapY"])
+    tour_map.saveMapData()
+
+main()
+
+import Tkinter
+
