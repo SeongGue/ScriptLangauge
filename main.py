@@ -47,7 +47,6 @@ class TourMap:
     def openHTML(self):
         webbrowser.open(self.html_name)
 
-
 def main():
     APIServer = TourAPI()
     tour_map = TourMap()
