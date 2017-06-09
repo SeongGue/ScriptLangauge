@@ -90,31 +90,32 @@ def SearchButtonAction():
     RenderText.delete(0.0, END)  
     iSearchIndex = SearchListBox.curselection()[0]
     if iSearchIndex == 0:
-        Search()
+        LocalSearch()
     elif iSearchIndex == 1:
-        pass
+        keywordSearch()
 
     RenderText.configure(state='disabled')
 
-def Search():
+def LocalSearch():
+    global InputLabel
+    global local
+    local = 0
+    #RenderText.insert(INSERT, InputLabel.get())
     server2 = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaCode?ServiceKey="
     value2 = "&MobileOS=ETC&MobileApp=AppTesting&numOfRows=1000"
-
+    
     realdata = openAPItoXML(server2, api_key, value2)
     
     localList = addParsingDicList(realdata, "item", "name")
     localListNum = addParsingDicList(realdata, "item", "code")
-    
+
     for i in localList:
-        if ( local == i ):
+        if ( InputLabel.get() == i ):
             local = localListNum[localList.index(i)]
-    
-    #print(local)
+
     server2 = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchFestival?ServiceKey="
     value2 = str("&areaCode=") + str(local) + str("&MobileOS=ETC&MobileApp=AppTesting&contentTypeId=15")
-    
-    #print(value2)
-    
+
     realdata = openAPItoXML(server2, api_key, value2)
     
     #print(realdata)
@@ -124,27 +125,26 @@ def Search():
     eventStartDate = addParsingDicList(realdata, "item", "eventstartdate")
     eventEndDate = addParsingDicList(realdata, "item", "eventenddate")
     eventImage = addParsingDicList(realdata, "item", "firstimage")
-
-    for i in eventLocal:
-                RenderText.insert(INSERT, "[")
-                RenderText.insert(INSERT, i + 1)
-                RenderText.insert(INSERT, "] ")
-                RenderText.insert(INSERT, "시설명: ")
-                RenderText.insert(INSERT, eventName)
-                RenderText.insert(INSERT, "\n")
-                RenderText.insert(INSERT, "주소: ")
-                RenderText.insert(INSERT, eventLocal)
-                RenderText.insert(INSERT, "\n")
-                RenderText.insert(INSERT, "전화번호: ")
-                RenderText.insert(INSERT, eventTel)
-                RenderText.insert(INSERT, "\n")
-                RenderText.insert(INSERT, "시작일: ")
-                RenderText.insert(INSERT, eventStartDate)
-                RenderText.insert(INSERT, "\n")
-                RenderText.insert(INSERT, "종료일: ")
-                RenderText.insert(INSERT, eventEndDate)
-                RenderText.insert(INSERT, "\n\n")
     
+    for i in eventLocal:
+        textData = str("이름 : ") + eventName[eventLocal.index(i)] + str("\n주소 : ") + i + str("\n전화번호 : ") + eventTel[eventLocal.index(i)] +  str("\n시작일 : ") + eventStartDate[eventLocal.index(i)] + str("\n종료일 : ") + eventEndDate[eventLocal.index(i)] + str  ("\nImage : ") + eventImage[eventLocal.index(i)] + str("\n") + str("\n")
+        RenderText.insert(INSERT, textData)
+    
+def keywordSearch():
+    global InputLabel
+    global keyword
+    server2 = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey="
+    keyword = InputLabel.get()
+    keyword = urllib.parse.quote(keyword)
+    value2 = "&keyword=" + str(keyword) + "&MobileOS=ETC&MobileApp=AppTesting&contentTypeId=15"
+    realdata = openAPItoXML(server2, api_key, value2)
+    eventLocal = addParsingDicList(realdata, "item", "addr1")
+    eventName = addParsingDicList(realdata, "item", "title")
+    eventTel = addParsingDicList(realdata, "item", "tel")
+    eventImage = addParsingDicList(realdata, "item", "firstimage")
+    for i in eventLocal:
+        textData2 = str("이름 : ") + eventName[eventLocal.index(i)] + str("\n주소 : ") + i + str("\n전화번호 : ") + eventTel[eventLocal.index(i)] + str  ("\nImage : ") + eventImage[eventLocal.index(i)] + str("\n") + str("\n")
+        RenderText.insert(INSERT, textData2)
 
 def InitRenderText():
     global RenderText
