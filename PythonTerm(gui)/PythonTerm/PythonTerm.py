@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import sys
 import urllib.request
+from io import BytesIO
+from PIL import Image, ImageTk
 import string
 import base64
 import codecs
@@ -8,6 +10,7 @@ from xml.dom.minidom import *
 from tkinter import *
 from tkinter import font
 import tkinter.messagebox
+
 g_Tk = Tk()
 g_Tk.title("나들이")
 g_Tk.geometry("400x600+750+200")
