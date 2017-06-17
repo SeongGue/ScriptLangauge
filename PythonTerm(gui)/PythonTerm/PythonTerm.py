@@ -90,7 +90,7 @@ def SearchButtonAction():
     global SearchListBox
 
     RenderText.configure(state='normal')
-    RenderText.delete(0.0, END)  
+    RenderText.delete(0.0, END)
     iSearchIndex = SearchListBox.curselection()[0]
     if iSearchIndex == 0:
         LocalSearch()
