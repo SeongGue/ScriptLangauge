@@ -1,1 +1,1 @@
-# ScriptLangauge
+# ScriptLanguage
